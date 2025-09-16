@@ -11,6 +11,9 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <title>Introducing KAT-Dev-32B, KAT-Coder: Advancing Code Intelligence through Scalable Agentic RL</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="case-pic/pic.png" as="image">
 
     <style>
         :root {
@@ -30,6 +33,19 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        
+        /* 性能优化 */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* GPU加速动画 */
+        .smooth-animation {
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         body {
@@ -393,7 +409,6 @@
 
         .agentic-rl-section {
             border-radius: 12px;
-            padding: 5px 0px;
             margin: 20px 0;
         }
 
@@ -2232,7 +2247,7 @@
                 clearly deviate from the ground truth, which also yields higher sample efficiency for RL.
             </p>
             <figure style="margin: 40px 0; text-align: center;">
-                <img src="case-pic/pic.png" alt="Reinforcement Finetuning Process"
+                <img src="case-pic/pic.png" alt="Reinforcement Finetuning Process" loading="lazy"
                     style="max-width: 800px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); " />
             </figure>
 
@@ -2274,7 +2289,7 @@
                     <div class="agentic-rl-section">
                         <h3>RL Infrastructure - SeamlessFlow</h3>
                         <figure style="margin: 40px 0; text-align: center;">
-                            <img src="case-pic/pic-3.png" alt="Agentic RL Scaling Architecture"
+                            <img src="case-pic/pic-3.png" alt="Agentic RL Scaling Architecture" loading="lazy"
                                 style="max-width: 800px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);" />
                         </figure>
                         <p>To scale RL, it is essential to fully decouple RL training from the diverse internal logic of agents, while also maximizing the utilization of heterogeneous computational architectures. 
@@ -2308,8 +2323,135 @@
                         <p>Below is how we observed the model's performance change on SWE-Bench Verified:</p>
                     </div>
                     <figure style="margin: 40px 0; text-align: center;">
-                        <img src="case-pic/pic-2.png" alt="SWE-Bench Verified Performance"
-                            style="max-width: 800px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);" />
+                        <!-- SWE-Bench Verified Performance Chart -->
+                        <div id="performance-chart" style="max-width: 800px; width: 100%; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                            <svg width="100%" height="400" viewBox="0 0 800 400" style="overflow: visible;">
+                                <!-- Background grid -->
+                                <defs>
+                                    <pattern id="grid" width="160" height="80" patternUnits="userSpaceOnUse">
+                                        <path d="M 160 0 L 0 0 0 80" fill="none" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                    </pattern>
+                                    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:0.05" />
+                                    </linearGradient>
+                                </defs>
+                                
+                                <!-- Grid -->
+                                <rect width="100%" height="100%" fill="url(#grid)" />
+                                
+                                <!-- Y-axis labels and lines -->
+                                <g id="y-axis">
+                                    <!-- Y-axis line (hidden) -->
+                                    <line x1="60" y1="30" x2="60" y2="350" stroke="#666" stroke-width="2" style="display: none;"/>
+                                    <!-- Y-axis labels (visible) -->
+                                    <text x="40" y="350" text-anchor="middle" fill="#999" font-size="14">0</text>
+                                    <text x="40" y="285" text-anchor="middle" fill="#999" font-size="14">20</text>
+                                    <text x="40" y="220" text-anchor="middle" fill="#999" font-size="14">40</text>
+                                    <text x="40" y="155" text-anchor="middle" fill="#999" font-size="14">60</text>
+                                    <text x="40" y="90" text-anchor="middle" fill="#999" font-size="14">80</text>
+                                    
+                                    <!-- Horizontal grid lines -->
+                                    <line x1="60" y1="350" x2="750" y2="350" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                    <line x1="60" y1="285" x2="750" y2="285" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                    <line x1="60" y1="220" x2="750" y2="220" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                    <line x1="60" y1="155" x2="750" y2="155" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                    <line x1="60" y1="90" x2="750" y2="90" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                </g>
+                                
+                                <!-- X-axis -->
+                                <g id="x-axis">
+                                    <line x1="60" y1="350" x2="750" y2="350" stroke="#666" stroke-width="2"/>
+                                    <!-- X-axis labels -->
+                                    <text x="133" y="375" text-anchor="middle" fill="#999" font-size="16">Base</text>
+                                    <text x="268" y="375" text-anchor="middle" fill="#999" font-size="16">Mid-Training</text>
+                                    <text x="403" y="375" text-anchor="middle" fill="#999" font-size="16">SFT</text>
+                                    <text x="538" y="375" text-anchor="middle" fill="#999" font-size="16">RFT</text>
+                                    <text x="673" y="375" text-anchor="middle" fill="#999" font-size="16">RL</text>
+                                </g>
+
+                                <!-- Smooth curve path -->
+                                <path id="performance-line" 
+                                      d="M 133,311 Q 200,278 268,246 Q 335,207 403,168 Q 470,150 538,132 Q 605,124 673,116"
+                                      stroke="#1a88ff" 
+                                      stroke-width="4" 
+                                      fill="none"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                                
+                                <!-- Area under curve -->
+                                <path d="M 133,311 Q 200,278 268,246 Q 335,207 403,168 Q 470,150 538,132 Q 605,124 673,116 L 673,350 L 133,350 Z"
+                                      fill="url(#chartGradient)"/>
+                                
+                                <!-- Invisible hover areas for value labels -->
+                                <g class="hover-areas">
+                                    <circle cx="133" cy="311" r="15" fill="transparent" style="cursor: pointer;" data-value="12" data-label-x="133" data-label-y="300"/>
+                                    <circle cx="268" cy="246" r="15" fill="transparent" style="cursor: pointer;" data-value="32" data-label-x="268" data-label-y="235"/>
+                                    <circle cx="403" cy="168" r="15" fill="transparent" style="cursor: pointer;" data-value="56" data-label-x="403" data-label-y="157"/>
+                                    <circle cx="538" cy="132" r="15" fill="transparent" style="cursor: pointer;" data-value="67" data-label-x="538" data-label-y="121"/>
+                                    <circle cx="673" cy="116" r="15" fill="transparent" style="cursor: pointer;" data-value="72" data-label-x="673" data-label-y="105"/>
+                                </g>
+                                
+                                <!-- Value labels (initially hidden) -->
+                                <g class="value-labels">
+                                    <text x="133" y="300" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="0">12</text>
+                                    <text x="268" y="235" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="1">32</text>
+                                    <text x="403" y="157" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="2">56</text>
+                                    <text x="538" y="121" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="3">67</text>
+                                    <text x="673" y="105" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="4">72</text>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                        <!-- Chart animation script -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const chartLine = document.getElementById('performance-line');
+                                if (chartLine) {
+                                    const pathLength = chartLine.getTotalLength();
+                                    chartLine.style.strokeDasharray = pathLength + ' ' + pathLength;
+                                    chartLine.style.strokeDashoffset = pathLength;
+                                    
+                                    // Animate line drawing
+                                    const observer = new IntersectionObserver((entries) => {
+                                        entries.forEach(entry => {
+                                            if (entry.isIntersecting) {
+                                                chartLine.style.transition = 'stroke-dashoffset 2s ease-in-out';
+                                                chartLine.style.strokeDashoffset = '0';
+                                                observer.unobserve(entry.target);
+                                            }
+                                        });
+                                    });
+                                    
+                                    observer.observe(document.getElementById('performance-chart'));
+                                }
+                                
+                                // Hover functionality for value labels
+                                const hoverAreas = document.querySelectorAll('.hover-areas circle');
+                                const valueLabels = document.querySelectorAll('.value-labels text');
+                                
+                                hoverAreas.forEach((area, index) => {
+                                    area.addEventListener('mouseenter', function() {
+                                        // Show corresponding value label
+                                        if (valueLabels[index]) {
+                                            valueLabels[index].style.display = 'block';
+                                            valueLabels[index].style.transition = 'opacity 0.3s ease';
+                                            valueLabels[index].style.opacity = '1';
+                                        }
+                                    });
+                                    
+                                    area.addEventListener('mouseleave', function() {
+                                        // Hide corresponding value label
+                                        if (valueLabels[index]) {
+                                            valueLabels[index].style.opacity = '0';
+                                            setTimeout(() => {
+                                                valueLabels[index].style.display = 'none';
+                                            }, 300);
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                     </figure>
                 </div>
             </div>
@@ -2379,18 +2521,18 @@ export ANTHROPIC_AUTH_TOKEN=your-dashscope-apikey</code></pre>
                     <div class="cases-content">
                         <!-- 星空效果 -->
                         <div class="case-panel active" id="starry-sky-panel">
-                            <img src="case-pic/Stary.gif" alt="星空效果演示" />
+                            <img src="case-pic/Stary.gif" alt="星空效果演示" loading="lazy" />
                         </div>
 
                         <!-- 水果忍者效果 -->
                         <div class="case-panel" id="fruit-ninja">
-                            <img src="case-pic/Ninja.gif" alt="水果忍者效果演示" />
+                            <img src="case-pic/Ninja.gif" alt="水果忍者效果演示" loading="lazy" />
                         </div>
 
                         <!-- 代码重构 -->
                         <div class="case-panel" id="code-refactor">
                             <div class="case-image">
-                                <img src="case-pic/pic-4.png" alt="代码重构案例展示" />
+                                <img src="case-pic/pic-4.png" alt="代码重构案例展示" loading="lazy" />
                             </div>
                         </div>
                     </div>
@@ -3032,6 +3174,74 @@ export ANTHROPIC_AUTH_TOKEN=your-dashscope-apikey</code></pre>
 
             init();
         }
+    </script>
+    
+    <!-- 性能优化脚本 -->
+    <script>
+        // 延迟加载非关键CSS和JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // 预加载关键图片
+            const criticalImages = [
+                'case-pic/pic.png'
+            ];
+            
+            criticalImages.forEach(src => {
+                const link = document.createElement('link');
+                link.rel = 'preload';
+                link.as = 'image';
+                link.href = src;
+                document.head.appendChild(link);
+            });
+            
+            // 优化滚动性能
+            let ticking = false;
+            function updateOnScroll() {
+                // 这里可以添加滚动相关的性能优化
+                ticking = false;
+            }
+            
+            function requestScrollUpdate() {
+                if (!ticking) {
+                    requestAnimationFrame(updateOnScroll);
+                    ticking = true;
+                }
+            }
+            
+            window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+            
+            // 图片懒加载回退方案（对于不支持原生lazy loading的浏览器）
+            if ('loading' in HTMLImageElement.prototype === false) {
+                const images = document.querySelectorAll('img[loading="lazy"]');
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src || img.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+                
+                images.forEach(img => imageObserver.observe(img));
+            }
+        });
+        
+        // 资源预加载
+        window.addEventListener('load', function() {
+            // 预加载下一页可能需要的资源
+            const nextImages = [
+                'case-pic/pic-3.png',
+                'case-pic/pic-4.png'
+            ];
+            
+            setTimeout(() => {
+                nextImages.forEach(src => {
+                    const img = new Image();
+                    img.src = src;
+                });
+            }, 1000);
+        });
     </script>
 </body>
 
