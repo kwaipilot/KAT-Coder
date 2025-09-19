@@ -1973,9 +1973,8 @@
                         class="highlight-model">KAT-Dev-32B</span> achieves comparable
                     performance and <span class="highlight-rank">🏆 ranks 4th</span> on SWE-Bench Verified with <span
                         class="highlight-metric">62.4%</span> resolved. Meanwhile, the most powerful variant: <span
-                        class="highlight-model">KAT-Coder</span>, achieves <span class="highlight-metric">72.2%</span>
-                    performance and <span class="highlight-achievement">🎯 resets a new state-of-the-art result</span>
-                    on <strong>SWE-Bench</strong> Verified.
+                        class="highlight-model">KAT-Coder</span>, achieves <span class="highlight-metric">73.4%</span>
+                    and marks a superior performance on <strong>SWE-Bench</strong> Verified.
                 </p>
             </div>
         </section>
@@ -1990,7 +1989,7 @@
                         <div class="chart" id="swe-verified-chart">
                             <div class="chart-bars">
                                 <div class="bar-container">
-                                    <div class="bar kat-bar" data-value="72.2" style="height: 100%">
+                                    <div class="bar kat-bar" data-value="73.4" style="height: 93.9%">
                                         <div class="bar-label">
                                             <svg width="16" height="16" viewBox="0 0 69 68" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -2025,12 +2024,12 @@
                                                 </defs>
                                             </svg>
                                         </div>
-                                        <div class="bar-value">72.2</div>
+                                        <div class="bar-value">73.4</div>
                                     </div>
                                     <div class="model-name">KAT-Coder</div>
                                 </div>
                                 <div class="bar-container">
-                                    <div class="bar openai-bar" data-value="71.8" style="height: 95%">
+                                    <div class="bar openai-bar" data-value="72.8" style="height: 90.7%">
                                         <div class="bar-label">
                                             <svg width="16" height="16" viewBox="0 0 12 12" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -2047,12 +2046,12 @@
                                                 </defs>
                                             </svg>
                                         </div>
-                                        <div class="bar-value">71.8*</div>
+                                        <div class="bar-value">72.8</div>
                                     </div>
                                     <div class="model-name">GPT-5</div>
                                 </div>
                                 <div class="bar-container">
-                                    <div class="bar openai-bar" data-value="66.0" style="height: 82%">
+                                    <div class="bar openai-bar" data-value="74.5" style="height: 100%">
                                         <div class="bar-label">
                                             <svg width="16" height="16" viewBox="0 0 12 12" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -2069,12 +2068,12 @@
                                                 </defs>
                                             </svg>
                                         </div>
-                                        <div class="bar-value">66.0*</div>
+                                        <div class="bar-value">74.5</div>
                                     </div>
-                                    <div class="model-name">OpenAI o3</div>
+                                    <div class="model-name">GPT-5-Codex</div>
                                 </div>
                                 <div class="bar-container">
-                                    <div class="bar claude-bar" data-value="70.8" style="height: 88%">
+                                    <div class="bar claude-bar" data-value="70.8" style="height: 79.7%">
                                         <div class="bar-label">
                                             <svg width="16" height="16" viewBox="0 0 40 40" fill="currentColor"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -2087,7 +2086,7 @@
                                     <div class="model-name">Claude Sonnet 4</div>
                                 </div>
                                 <div class="bar-container">
-                                    <div class="bar gemini-bar" data-value="67.2" style="height: 75%">
+                                    <div class="bar gemini-bar" data-value="67.2" style="height: 60%">
                                         <div class="bar-label">
                                             <svg width="16" height="16" viewBox="0 0 1024 1024"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -2698,7 +2697,7 @@ export ANTHROPIC_AUTH_TOKEN=WQ_API_KEY</code></pre>
                     const value = bar.getAttribute("data-value");
                     const modelName = bar.parentElement.querySelector(".model-name").textContent;
 
-                    tooltip.textContent = modelName === "GPT-5" || modelName === "OpenAI o3"
+                    tooltip.textContent = modelName === "GPT-5" || modelName === "GPT-5-Codex"
                         ? `${modelName}: ${value}% (On 500 verified tasks)`
                         : `${modelName}: ${value}%`;
                     tooltip.style.opacity = "1";
