@@ -2225,81 +2225,57 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Reinforcement Finetune -->
-    <section class="hero">
-        <div class="container">
-            <h2 class="hero-subtitle">Reinforcement Finetune</h2>
-            <p class="hero-description">
-                At this stage, building on the reinforcement learning (RL) pipeline, we introduce multiple ground truths
-                to guide trajectory exploration, improving rollout efficiency and thereby enhancing the efficiency and
-                stability of the RL phase. By shifting from absolute rewards to measuring discrepancies from ground
-                truth, we further stabilize the RL stage.
-            </p>
-            <p class="hero-description">
-                Transitioning from directly assigning absolute rewards to evaluating the relative differences between
-                rollout samples and ground truth provides a more stable and accurate reward signal for RL. Meanwhile, we
-                supervise sample correctness in real time during rollouts and promptly terminate generations that
-                clearly deviate from the ground truth, which also yields higher sample efficiency for RL.
-            </p>
-            <figure style="margin: 40px 0; text-align: center;">
-                <img src="case-pic/pic.png" alt="Reinforcement Finetuning Process" loading="lazy"
-                    style="max-width: 800px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); " />
-            </figure>
+                    <div class="kat-training-section">
+                        <h3>Reinforcement Finetune</h3>
+                        <p>At this stage, building on the reinforcement learning (RL) pipeline, we introduce multiple ground truths
+                            to guide trajectory exploration, improving rollout efficiency and thereby enhancing the efficiency and
+                            stability of the RL phase. By shifting from absolute rewards to measuring discrepancies from ground
+                            truth, we further stabilize the RL stage.</p>
+                        
+                        <p>Transitioning from directly assigning absolute rewards to evaluating the relative differences between
+                            rollout samples and ground truth provides a more stable and accurate reward signal for RL. Meanwhile, we
+                            supervise sample correctness in real time during rollouts and promptly terminate generations that
+                            clearly deviate from the ground truth, which also yields higher sample efficiency for RL.</p>
 
-            <div class="hero-description">
-                <p>After three training stages, we obtain a cold-start model prepared for RL, and the introduction of
-                    Reinforcement Finetuning (RFT) also builds a bridge between SFT and RL.</p>
+                        <figure style="margin: 40px 0; text-align: center;">
+                            <img src="case-pic/pic.png" alt="Reinforcement Finetuning Process" loading="lazy"
+                                style="max-width: 800px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); " />
+                        </figure>
 
-                <ul>
-                    <li><strong>Mid-Training:</strong> First, we teach the model a variety of basic skills, including
-                        how to use tools and how to understand user intent.</li>
-                    <li><strong>SFT:</strong> Then, using high-quality trajectory data, the model learns to perform real
-                        downstream tasks.</li>
-                    <li><strong>RFT:</strong> Finally, before the model begins "free exploration," teacher trajectories
-                        provide hands-on guidance on how to explore, which also ensures stability in the subsequent RL
-                        phase.</li>
-                </ul>                
-            </div>
-        </div>
-    </section>
+                        <p>After three training stages, we obtain a cold-start model prepared for RL, and the introduction of
+                            Reinforcement Finetuning (RFT) also builds a bridge between SFT and RL:</p>
 
-    <!-- Agentic RL Scaling -->
-    <section class="hero">
-        <div class="container">
-            <div class="agentic-rl-module">
-                <h2 class="hero-subtitle">Agentic RL Scaling</h2>
+                        <ul>
+                            <li><strong>Mid-Training:</strong> First, we teach the model a variety of basic skills, including
+                                how to use tools and how to understand user intent.</li>
+                            <li><strong>SFT:</strong> Then, using high-quality trajectory data, the model learns to perform real
+                                downstream tasks.</li>
+                            <li><strong>RFT:</strong> Finally, before the model begins "free exploration," teacher trajectories
+                                provide hands-on guidance on how to explore, which also ensures stability in the subsequent RL
+                                phase.</li>
+                        </ul>
+                    </div>
 
-                <div class="hero-description">
-                    <div class="agentic-rl-section">
-                        <h3>Entropy Based Tree Pruning</h3>
-                        <p>Even with the above mentioned technique, performing training through all tokens in the full tree still remains prohibitively expensive. 
+                    <div class="kat-training-section">
+                        <h3>Agentic RL Scaling</h3> 
+                        <p><strong>⚡ Entropy Based Tree Pruning: </strong>Even with the above mentioned technique, performing training through all tokens in the full tree still remains prohibitively expensive. 
                             Thus, we need a mechanism to prioritize nodes that carry the strongest training signals.</p>
                         <p>To this end, we compress trajectories into a prefix tree where each node represents a shared prefix and each edge corresponds to a segment of tokens. 
                             Under a fixed compute budget, the goal is to retain only the most valuable nodes for training. 
                             We estimate the informativeness of nodes based on entropy signals aggregated across the tree and their likelihood of being reached, and then prune the tree by expanding nodes in order of importance until the budget is exhausted. 
                             Additional heuristics ensure that structurally important regions (e.g., tool or memory events) are preserved and that local context is maintained for stable training. 
                             This entropy-based pruning enables us to substantially reduce redundant computation while retaining most of the effective training signal, leading to significant throughout gains and lower overall cost.</p>
-                    </div>
-
-                    <div class="agentic-rl-section">
-                        <h3>RL Infrastructure - SeamlessFlow</h3>
+                                           
+                        <p><strong>⚡ RL Infrastructure - SeamlessFlow: </strong> To scale RL, it is essential to fully decouple RL training from the diverse internal logic of agents, while also maximizing the utilization of heterogeneous computational architectures. 
+                            Following the design of SeamlessFlow, we implemented an intermediate layer between agents and RL training dedicated to trajectory-tree management, ensuring strict separation between the two. 
+                            In addition, we adopted the proposed tag-driven scheduling mechanism to orchestrate task allocation across heterogeneous clusters, thereby minimizing pipeline bubbles and sustaining high-throughput training.</p>
                         <figure style="margin: 40px 0; text-align: center;">
                             <img src="case-pic/pic-3.png" alt="Agentic RL Scaling Architecture" loading="lazy"
                                 style="max-width: 800px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);" />
                         </figure>
-                        <p>To scale RL, it is essential to fully decouple RL training from the diverse internal logic of agents, while also maximizing the utilization of heterogeneous computational architectures. 
-                            Following the design of SeamlessFlow, we implemented an intermediate layer between agents and RL training dedicated to trajectory-tree management, ensuring strict separation between the two. 
-                            In addition, we adopted the proposed tag-driven scheduling mechanism to orchestrate task allocation across heterogeneous clusters, thereby minimizing pipeline bubbles and sustaining high-throughput training. </p>
-                    </div>
 
-                    <div class="agentic-rl-section">
-                        <h3>Unified Environment Interface and RL Data Construction</h3>
-                        <p>We unify the deployment and evaluation interfaces across different RL execution environments,
+                        <p><strong>⚡ Unified Environment Interface and RL Data Construction: </strong>We unify the deployment and evaluation interfaces across different RL execution environments,
                             enabling any newly added environment to be seamlessly integrated at low cost. This unified
                             design lays a solid foundation for scaling RL training across heterogeneous data sources and
                             task types. Specifically, for software development scenarios, we focus on three essential
@@ -2321,138 +2297,140 @@
                             grounds the resulting models' programming proficiency in realistic, production-level
                             contexts.</p>
                         <p>Below is how we observed the model's performance change on SWE-Bench Verified:</p>
-                    </div>
-                    <figure style="margin: 40px 0; text-align: center;">
-                        <!-- SWE-Bench Verified Performance Chart -->
-                        <div id="performance-chart" style="max-width: 800px; width: 100%; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-                            <svg width="100%" height="400" viewBox="0 0 800 400" style="overflow: visible;">
-                                <!-- Background grid -->
-                                <defs>
-                                    <pattern id="grid" width="160" height="80" patternUnits="userSpaceOnUse">
-                                        <path d="M 160 0 L 0 0 0 80" fill="none" stroke="#333" stroke-width="1" opacity="0.3"/>
-                                    </pattern>
-                                    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:0.3" />
-                                        <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:0.05" />
-                                    </linearGradient>
-                                </defs>
-                                
-                                <!-- Grid -->
-                                <rect width="100%" height="100%" fill="url(#grid)" />
-                                
-                                <!-- Y-axis labels and lines -->
-                                <g id="y-axis">
-                                    <!-- Y-axis line (hidden) -->
-                                    <line x1="60" y1="30" x2="60" y2="350" stroke="#666" stroke-width="2" style="display: none;"/>
-                                    <!-- Y-axis labels (visible) -->
-                                    <text x="40" y="350" text-anchor="middle" fill="#999" font-size="14">0</text>
-                                    <text x="40" y="285" text-anchor="middle" fill="#999" font-size="14">20</text>
-                                    <text x="40" y="220" text-anchor="middle" fill="#999" font-size="14">40</text>
-                                    <text x="40" y="155" text-anchor="middle" fill="#999" font-size="14">60</text>
-                                    <text x="40" y="90" text-anchor="middle" fill="#999" font-size="14">80</text>
-                                    
-                                    <!-- Horizontal grid lines -->
-                                    <line x1="60" y1="350" x2="750" y2="350" stroke="#333" stroke-width="1" opacity="0.3"/>
-                                    <line x1="60" y1="285" x2="750" y2="285" stroke="#333" stroke-width="1" opacity="0.3"/>
-                                    <line x1="60" y1="220" x2="750" y2="220" stroke="#333" stroke-width="1" opacity="0.3"/>
-                                    <line x1="60" y1="155" x2="750" y2="155" stroke="#333" stroke-width="1" opacity="0.3"/>
-                                    <line x1="60" y1="90" x2="750" y2="90" stroke="#333" stroke-width="1" opacity="0.3"/>
-                                </g>
-                                
-                                <!-- X-axis -->
-                                <g id="x-axis">
-                                    <line x1="60" y1="350" x2="750" y2="350" stroke="#666" stroke-width="2"/>
-                                    <!-- X-axis labels -->
-                                    <text x="133" y="375" text-anchor="middle" fill="#999" font-size="16">Base</text>
-                                    <text x="268" y="375" text-anchor="middle" fill="#999" font-size="16">Mid-Training</text>
-                                    <text x="403" y="375" text-anchor="middle" fill="#999" font-size="16">SFT</text>
-                                    <text x="538" y="375" text-anchor="middle" fill="#999" font-size="16">RFT</text>
-                                    <text x="673" y="375" text-anchor="middle" fill="#999" font-size="16">RL</text>
-                                </g>
 
-                                <!-- Smooth curve path -->
-                                <path id="performance-line" 
-                                      d="M 133,311 Q 200,278 268,246 Q 335,207 403,168 Q 470,150 538,132 Q 605,124 673,116"
-                                      stroke="#1a88ff" 
-                                      stroke-width="4" 
-                                      fill="none"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                                
-                                <!-- Area under curve -->
-                                <path d="M 133,311 Q 200,278 268,246 Q 335,207 403,168 Q 470,150 538,132 Q 605,124 673,116 L 673,350 L 133,350 Z"
-                                      fill="url(#chartGradient)"/>
-                                
-                                <!-- Invisible hover areas for value labels -->
-                                <g class="hover-areas">
-                                    <circle cx="133" cy="311" r="15" fill="transparent" style="cursor: pointer;" data-value="12" data-label-x="133" data-label-y="300"/>
-                                    <circle cx="268" cy="246" r="15" fill="transparent" style="cursor: pointer;" data-value="32" data-label-x="268" data-label-y="235"/>
-                                    <circle cx="403" cy="168" r="15" fill="transparent" style="cursor: pointer;" data-value="56" data-label-x="403" data-label-y="157"/>
-                                    <circle cx="538" cy="132" r="15" fill="transparent" style="cursor: pointer;" data-value="67" data-label-x="538" data-label-y="121"/>
-                                    <circle cx="673" cy="116" r="15" fill="transparent" style="cursor: pointer;" data-value="72" data-label-x="673" data-label-y="105"/>
-                                </g>
-                                
-                                <!-- Value labels (initially hidden) -->
-                                <g class="value-labels">
-                                    <text x="133" y="300" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="0">12</text>
-                                    <text x="268" y="235" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="1">32</text>
-                                    <text x="403" y="157" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="2">56</text>
-                                    <text x="538" y="121" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="3">67</text>
-                                    <text x="673" y="105" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="4">72</text>
-                                </g>
-                            </svg>
-                        </div>
-                        
-                        <!-- Chart animation script -->
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const chartLine = document.getElementById('performance-line');
-                                if (chartLine) {
-                                    const pathLength = chartLine.getTotalLength();
-                                    chartLine.style.strokeDasharray = pathLength + ' ' + pathLength;
-                                    chartLine.style.strokeDashoffset = pathLength;
+
+                        <figure style="margin: 40px 0; text-align: center;">
+                            <!-- SWE-Bench Verified Performance Chart -->
+                            <div id="performance-chart" style="max-width: 800px; width: 100%; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                                <svg width="100%" height="400" viewBox="0 0 800 400" style="overflow: visible;">
+                                    <!-- Background grid -->
+                                    <defs>
+                                        <pattern id="grid" width="160" height="80" patternUnits="userSpaceOnUse">
+                                            <path d="M 160 0 L 0 0 0 80" fill="none" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                        </pattern>
+                                        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:0.3" />
+                                            <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:0.05" />
+                                        </linearGradient>
+                                    </defs>
                                     
-                                    // Animate line drawing
-                                    const observer = new IntersectionObserver((entries) => {
-                                        entries.forEach(entry => {
-                                            if (entry.isIntersecting) {
-                                                chartLine.style.transition = 'stroke-dashoffset 2s ease-in-out';
-                                                chartLine.style.strokeDashoffset = '0';
-                                                observer.unobserve(entry.target);
+                                    <!-- Grid -->
+                                    <rect width="100%" height="100%" fill="url(#grid)" />
+                                    
+                                    <!-- Y-axis labels and lines -->
+                                    <g id="y-axis">
+                                        <!-- Y-axis line (hidden) -->
+                                        <line x1="60" y1="30" x2="60" y2="350" stroke="#666" stroke-width="2" style="display: none;"/>
+                                        <!-- Y-axis labels (visible) -->
+                                        <text x="40" y="350" text-anchor="middle" fill="#999" font-size="14">0</text>
+                                        <text x="40" y="285" text-anchor="middle" fill="#999" font-size="14">20</text>
+                                        <text x="40" y="220" text-anchor="middle" fill="#999" font-size="14">40</text>
+                                        <text x="40" y="155" text-anchor="middle" fill="#999" font-size="14">60</text>
+                                        <text x="40" y="90" text-anchor="middle" fill="#999" font-size="14">80</text>
+                                        
+                                        <!-- Horizontal grid lines -->
+                                        <line x1="60" y1="350" x2="750" y2="350" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                        <line x1="60" y1="285" x2="750" y2="285" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                        <line x1="60" y1="220" x2="750" y2="220" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                        <line x1="60" y1="155" x2="750" y2="155" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                        <line x1="60" y1="90" x2="750" y2="90" stroke="#333" stroke-width="1" opacity="0.3"/>
+                                    </g>
+                                    
+                                    <!-- X-axis -->
+                                    <g id="x-axis">
+                                        <line x1="60" y1="350" x2="750" y2="350" stroke="#666" stroke-width="2"/>
+                                        <!-- X-axis labels -->
+                                        <text x="133" y="375" text-anchor="middle" fill="#999" font-size="16">Base</text>
+                                        <text x="268" y="375" text-anchor="middle" fill="#999" font-size="16">Mid-Training</text>
+                                        <text x="403" y="375" text-anchor="middle" fill="#999" font-size="16">SFT</text>
+                                        <text x="538" y="375" text-anchor="middle" fill="#999" font-size="16">RFT</text>
+                                        <text x="673" y="375" text-anchor="middle" fill="#999" font-size="16">RL</text>
+                                    </g>
+
+                                    <!-- Smooth curve path -->
+                                    <path id="performance-line" 
+                                          d="M 133,311 Q 200,278 268,246 Q 335,207 403,168 Q 470,150 538,132 Q 605,124 673,116"
+                                          stroke="#1a88ff" 
+                                          stroke-width="4" 
+                                          fill="none"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    
+                                    <!-- Area under curve -->
+                                    <path d="M 133,311 Q 200,278 268,246 Q 335,207 403,168 Q 470,150 538,132 Q 605,124 673,116 L 673,350 L 133,350 Z"
+                                          fill="url(#chartGradient)"/>
+                                    
+                                    <!-- Invisible hover areas for value labels -->
+                                    <g class="hover-areas">
+                                        <circle cx="133" cy="311" r="15" fill="transparent" style="cursor: pointer;" data-value="12" data-label-x="133" data-label-y="300"/>
+                                        <circle cx="268" cy="246" r="15" fill="transparent" style="cursor: pointer;" data-value="32" data-label-x="268" data-label-y="235"/>
+                                        <circle cx="403" cy="168" r="15" fill="transparent" style="cursor: pointer;" data-value="56" data-label-x="403" data-label-y="157"/>
+                                        <circle cx="538" cy="132" r="15" fill="transparent" style="cursor: pointer;" data-value="67" data-label-x="538" data-label-y="121"/>
+                                        <circle cx="673" cy="116" r="15" fill="transparent" style="cursor: pointer;" data-value="72" data-label-x="673" data-label-y="105"/>
+                                    </g>
+                                    
+                                    <!-- Value labels (initially hidden) -->
+                                    <g class="value-labels">
+                                        <text x="133" y="300" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="0">12</text>
+                                        <text x="268" y="235" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="1">32</text>
+                                        <text x="403" y="157" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="2">56</text>
+                                        <text x="538" y="121" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="3">67</text>
+                                        <text x="673" y="105" text-anchor="middle" fill="#999" font-size="14" font-weight="bold" style="display: none;" data-point="4">72</text>
+                                    </g>
+                                </svg>
+                            </div>
+                            
+                            <!-- Chart animation script -->
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const chartLine = document.getElementById('performance-line');
+                                    if (chartLine) {
+                                        const pathLength = chartLine.getTotalLength();
+                                        chartLine.style.strokeDasharray = pathLength + ' ' + pathLength;
+                                        chartLine.style.strokeDashoffset = pathLength;
+                                        
+                                        // Animate line drawing
+                                        const observer = new IntersectionObserver((entries) => {
+                                            entries.forEach(entry => {
+                                                if (entry.isIntersecting) {
+                                                    chartLine.style.transition = 'stroke-dashoffset 2s ease-in-out';
+                                                    chartLine.style.strokeDashoffset = '0';
+                                                    observer.unobserve(entry.target);
+                                                }
+                                            });
+                                        });
+                                        
+                                        observer.observe(document.getElementById('performance-chart'));
+                                    }
+                                    
+                                    // Hover functionality for value labels
+                                    const hoverAreas = document.querySelectorAll('.hover-areas circle');
+                                    const valueLabels = document.querySelectorAll('.value-labels text');
+                                    
+                                    hoverAreas.forEach((area, index) => {
+                                        area.addEventListener('mouseenter', function() {
+                                            // Show corresponding value label
+                                            if (valueLabels[index]) {
+                                                valueLabels[index].style.display = 'block';
+                                                valueLabels[index].style.transition = 'opacity 0.3s ease';
+                                                valueLabels[index].style.opacity = '1';
+                                            }
+                                        });
+                                        
+                                        area.addEventListener('mouseleave', function() {
+                                            // Hide corresponding value label
+                                            if (valueLabels[index]) {
+                                                valueLabels[index].style.opacity = '0';
+                                                setTimeout(() => {
+                                                    valueLabels[index].style.display = 'none';
+                                                }, 300);
                                             }
                                         });
                                     });
-                                    
-                                    observer.observe(document.getElementById('performance-chart'));
-                                }
-                                
-                                // Hover functionality for value labels
-                                const hoverAreas = document.querySelectorAll('.hover-areas circle');
-                                const valueLabels = document.querySelectorAll('.value-labels text');
-                                
-                                hoverAreas.forEach((area, index) => {
-                                    area.addEventListener('mouseenter', function() {
-                                        // Show corresponding value label
-                                        if (valueLabels[index]) {
-                                            valueLabels[index].style.display = 'block';
-                                            valueLabels[index].style.transition = 'opacity 0.3s ease';
-                                            valueLabels[index].style.opacity = '1';
-                                        }
-                                    });
-                                    
-                                    area.addEventListener('mouseleave', function() {
-                                        // Hide corresponding value label
-                                        if (valueLabels[index]) {
-                                            valueLabels[index].style.opacity = '0';
-                                            setTimeout(() => {
-                                                valueLabels[index].style.display = 'none';
-                                            }, 300);
-                                        }
-                                    });
                                 });
-                            });
-                        </script>
-                    </figure>
+                            </script>
+                        </figure>
+                    </div>
                 </div>
             </div>
         </div>
