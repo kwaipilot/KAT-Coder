@@ -2446,26 +2446,25 @@
                     <div class="code-section">
                         <h3>Claude Code</h3>
                         <p>
-                            You can now use KAT-Coder with Claude Code. Simply request an API key on <a
-                                href="https://console.streamlake.com/console/wanqing/api-key"
-                                target="_blank">StreamLake</a> platform and install Claude Code to start coding.
+                            KAT-Coder is now available for use with Claude Code. Simply request an API key and End Point ID on the <a
+                                href="https://console.streamlake.com/wanqing"
+                                target="_blank">StreamLake Wanqing</a> platform and install Claude Code to start coding.
                         </p>
                         <div class="code-block">
                             <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
                         </div>
                         <p>
-                            We have provided a entrypoint for seamlessly experiencing coding with KAT-Coder.
+                            Obtain the API key and create an inference endpoint according to the <a
+                                href="https://www.streamlake.com/document/WANQING/me6ymdjrqv8lp4iq0o9"
+                                target="_blank">document</a>.
                         </p>
-                    </div>
-
-                    <div class="code-section">
-                        <h3>Claude Code Proxy API</h3>
-                        <p>Configure your environment variables to use KAT-Dev-32B through the proxy API:</p>
 
                         <div class="code-block">
-                            <pre><code>export ANTHROPIC_BASE_URL=XXX # 此处替换域名
+                            <pre><code># replace 'ep-xxx-xxx' with your Wangqing End Point ID
+export ANTHROPIC_BASE_URL=https://wanqing.streamlakeapi.com/api/gateway/v1/endpoints/ep-xxx-xxx/claude-code-proxy
 
-export ANTHROPIC_AUTH_TOKEN=your-dashscope-apikey</code></pre>
+# replace 'WQ_API_KEY' with your Wangqing API KEY
+export ANTHROPIC_AUTH_TOKEN=WQ_API_KEY</code></pre>
                         </div>
 
                         <p>Then you should be able to use Claude Code with KAT-Coder!</p>
