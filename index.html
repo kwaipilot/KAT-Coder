@@ -56,12 +56,15 @@
             padding: 19px 48px;
             justify-content: space-between;
             align-items: flex-start;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            background: transparent;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
 
         .header-left,
@@ -182,32 +185,26 @@
 
         /* Hero Background Image */
         .hero-background {
+            width: 100vw;
+            height: 400px;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            bottom: 0;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            overflow: hidden;
             z-index: -1;
             pointer-events: none;
         }
 
         .hero-background img {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100vw;
-            aspect-ratio: 720/277;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            object-position: center bottom;
-        }
-
-        /* 响应式背景图 */
-        @media (max-width: 768px) {
-            .hero-background img {
-                width: 100vw;
-                aspect-ratio: 720/277;
-            }
+            object-position: center;
+            display: block;
+            opacity: 0.8;
         }
 
         /* 修正 Highlights 部分占据整屏的问题 */
@@ -299,14 +296,14 @@
         }
 
         .secondary-text {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             font-family: "PingFang SC";
             font-size: 14px;
             font-style: normal;
             font-weight: 300;
             line-height: 180%;
             /* 25.2px */
-            margin: 0 auto 32px;
+            margin: 0 auto 16px;
             max-width: 800px;
             text-align: left;
         }
@@ -344,7 +341,7 @@
         }
 
         .contribution-card-content {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             font-family: "PingFang SC";
             font-size: 14px;
             font-style: normal;
@@ -371,7 +368,7 @@
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             font-family: "PingFang SC";
             font-size: 14px;
             font-weight: 300;
@@ -409,6 +406,7 @@
             align-self: stretch;
             position: relative;
             overflow: hidden;
+            flex-direction: row;
         }
 
         .open-access-card-content {
@@ -418,6 +416,8 @@
             gap: 12px;
             justify-content: flex-start;
             padding: 28px;
+            min-width: 0;
+            max-width: calc(100% - 240px);
         }
 
         .open-access-card-title {
@@ -431,7 +431,7 @@
         }
 
         .open-access-card-text {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             font-family: "PingFang SC";
             font-size: 14px;
             font-style: normal;
@@ -442,6 +442,7 @@
 
         .open-access-card-image {
             flex-shrink: 0;
+            width: 240px;
             height: 120px;
             object-fit: cover;
             object-position: center;
@@ -801,6 +802,10 @@
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 0 15px;
+            }
+
             .code-section {
                 padding: 8px 0;
                 margin: 12px 0;
@@ -974,6 +979,7 @@
             align-self: stretch;
             position: relative;
             overflow: hidden;
+            flex-direction: row;
         }
 
         .future-card-content {
@@ -983,11 +989,13 @@
             gap: 12px;
             justify-content: flex-start;
             padding: 28px;
+            min-width: 0;
+            max-width: calc(100% - 240px);
         }
 
         .future-card-image {
             flex-shrink: 0;
-            width: 174px;
+            width: 240px;
             height: 120px;
             object-fit: cover;
             object-position: center;
@@ -1576,14 +1584,21 @@
                 padding: 0;
                 gap: 0;
                 border-radius: 16px;
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                align-items: center;
+                position: relative;
             }
 
             .open-access-card-content {
                 padding: 20px;
                 word-wrap: break-word;
                 overflow-wrap: break-word;
+                flex: 1;
+                min-width: 0;
+                max-width: calc(100% - 40px);
+                position: relative;
+                z-index: 2;
+                border-radius: 16px 0 0 16px;
             }
 
             .open-access-card-title {
@@ -1606,18 +1621,30 @@
             .future-card {
                 padding: 0;
                 gap: 0;
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                align-items: center;
+                position: relative;
             }
 
             .future-card-content {
                 padding: 20px;
+                flex: 1;
+                min-width: 0;
+                max-width: calc(100% - 40px);
+                position: relative;
+                z-index: 2;
+                border-radius: 16px 0 0 16px;
             }
 
             .future-card-image {
-                width: 100%;
-                height: 120px;
-                border-radius: 0 0 12px 12px;
+                flex-shrink: 0;
+                width: 200px;
+                height: 140px;
+                border-radius: 0 16px 16px 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
             }
 
             .future-card h4 {
@@ -1634,12 +1661,14 @@
             }
 
             .open-access-card-image {
-                width: 100%;
-                height: 120px;
-                border-radius: 0 0 16px 16px;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 16px;
-                border-bottom-left-radius: 16px;
+                flex-shrink: 0;
+                width: 200px;
+                height: 140px;
+                border-radius: 0 16px 16px 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
             }
 
             .chart-container {
@@ -1995,14 +2024,21 @@
                 padding: 0;
                 gap: 0;
                 border-radius: 12px;
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                align-items: center;
+                position: relative;
             }
 
             .open-access-card-content {
                 padding: 16px;
                 word-wrap: break-word;
                 overflow-wrap: break-word;
+                flex: 1;
+                min-width: 0;
+                max-width: calc(100% - 40px);
+                position: relative;
+                z-index: 2;
+                border-radius: 12px 0 0 12px;
             }
 
             .open-access-card-title {
@@ -2064,18 +2100,30 @@
             .future-card {
                 padding: 0;
                 gap: 0;
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                align-items: center;
+                position: relative;
             }
 
             .future-card-content {
                 padding: 16px;
+                flex: 1;
+                min-width: 0;
+                max-width: calc(100% - 40px);
+                position: relative;
+                z-index: 2;
+                border-radius: 12px 0 0 12px;
             }
 
             .future-card-image {
-                width: 100%;
-                height: 87px;
-                border-radius: 0 0 12px 12px;
+                flex-shrink: 0;
+                width: 200px;
+                height: 140px;
+                border-radius: 0 12px 12px 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
             }
 
             .future-card h4 {
@@ -2092,12 +2140,14 @@
             }
 
             .open-access-card-image {
-                width: 100%;
-                height: 87px;
-                border-radius: 0 0 12px 12px;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 12px;
-                border-bottom-left-radius: 12px;
+                flex-shrink: 0;
+                width: 200px;
+                height: 140px;
+                border-radius: 0 12px 12px 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
             }
         }
     </style>
