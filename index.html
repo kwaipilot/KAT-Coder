@@ -3200,7 +3200,7 @@ export ANTHROPIC_AUTH_TOKEN=WQ_API_KEY</code></pre>
 
         function initializePerformanceOptimizations() {
             // 预加载关键图片
-            const criticalImages = ["case-pic/pic.png", "case-pic/chart_group_1.png", "case-pic/chart_group_2.png", "case-pic/chart_group_3.png"];
+            const criticalImages = ["case-pic/background.svg", "case-pic/pic.png", "case-pic/chart_group_1.png", "case-pic/chart_group_2.png", "case-pic/chart_group_3.png"];
 
             criticalImages.forEach((src) => {
                 const link = document.createElement("link");
@@ -3209,17 +3209,6 @@ export ANTHROPIC_AUTH_TOKEN=WQ_API_KEY</code></pre>
                 link.href = src;
                 document.head.appendChild(link);
             });
-
-            // 优化背景SVG加载
-            const heroBackground = document.querySelector('.hero-background');
-            if (heroBackground) {
-                // 添加加载完成的类名以便后续优化
-                const bgImage = new Image();
-                bgImage.onload = function() {
-                    heroBackground.classList.add('loaded');
-                };
-                bgImage.src = './case-pic/background.svg';
-            }
 
             // 优化滚动性能
             let ticking = false;
